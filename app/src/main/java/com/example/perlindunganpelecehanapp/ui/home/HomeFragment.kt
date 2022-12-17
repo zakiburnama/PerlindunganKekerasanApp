@@ -1,5 +1,6 @@
 package com.example.perlindunganpelecehanapp.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.perlindunganpelecehanapp.CameraActivity
 import com.example.perlindunganpelecehanapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -33,8 +35,11 @@ private var _binding: FragmentHomeBinding? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        binding.button.setOnClickListener{}
+
+        binding.button.setOnClickListener{
+            val intent = Intent(activity, CameraActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 
