@@ -2,7 +2,6 @@ package com.example.perlindunganpelecehanapp
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.text.FieldPosition
 
 @Parcelize
 data class Perlindungan(

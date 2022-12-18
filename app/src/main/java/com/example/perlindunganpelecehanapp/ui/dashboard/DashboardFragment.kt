@@ -9,6 +9,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.example.perlindunganpelecehanapp.Kekerasan
+import com.example.perlindunganpelecehanapp.PerlindunganAdapter
 import com.example.perlindunganpelecehanapp.databinding.FragmentDashboardBinding
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
@@ -30,21 +34,17 @@ private var _binding: FragmentDashboardBinding? = null
         getAllImage()
     }
 
-    override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-    ): View {
-        val dashboardViewModel =
-                ViewModelProvider(this).get(DashboardViewModel::class.java)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View {
+//        val dashboardViewModel =
+//                ViewModelProvider(this).get(DashboardViewModel::class.java)
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-          textView.text = it
-        }
+//        val textView: TextView = binding.textDashboard
+//        dashboardViewModel.text.observe(viewLifecycleOwner) {
+//          textView.text = it
+//        }
 
         return root
     }
@@ -54,18 +54,19 @@ private var _binding: FragmentDashboardBinding? = null
     private fun getAllImage() = CoroutineScope(Dispatchers.IO).launch {
         try {
             val images = storageReference.listAll().await()
-            val imageUrls = mutableListOf<String>()
-            val imageName = mutableListOf<String>()
+            val listPerlindungan = ArrayList<Kekerasan>()
             for(image in images.items) {
                 val url = image.downloadUrl.await()
-                imageUrls.add(url.toString())
-                imageName.add(image.name)
+                listPerlindungan.add(Kekerasan(image.name, url.toString()))
             }
 
-            Log.i("TAG", "#### $imageUrls")
-            Log.i("TAG", "#### $imageName")
-
             withContext(Dispatchers.Main) {
+                val adapterPerlindungan = PerlindunganAdapter(listPerlindungan)
+                binding.rvPerlindungan.adapter = adapterPerlindungan
+                binding.rvPerlindungan.apply {
+                    adapter = adapterPerlindungan
+                    layoutManager = LinearLayoutManager(context)
+                }
 //                val animalAdapter = AnimalAdapter(imageUrls)
 //                if (animalAdapter.itemCount == 0) {
 //                    binding.textViewNoData.visibility = View.VISIBLE
