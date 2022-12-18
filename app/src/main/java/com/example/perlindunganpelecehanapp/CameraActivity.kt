@@ -3,11 +3,10 @@ package com.example.perlindunganpelecehanapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Build
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.perlindunganpelecehanapp.databinding.ActivityCameraBinding
-import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -19,10 +18,12 @@ import androidx.core.net.toUri
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
-import java.io.File
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
@@ -30,6 +31,7 @@ class CameraActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
 
     private val storageReference = FirebaseStorage.getInstance().getReference("uploads")
+    private lateinit var database : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,41 +74,31 @@ class CameraActivity : AppCompatActivity() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
 
-//                    Log.i("TAG", "#### name ${photoFile.name}")
-//                    Log.i("TAG", "#### path ${photoFile.path}")
-//
-//                    val x = storageReference.child("18-Dec-2022.jpg")
-//                    Log.i("TAG", "#### ${x}")
+                    val uriFile = photoFile.toUri()
+                    val nameFile = photoFile.name
 
-
-                    val myFile = photoFile.toUri()
-                    storageReference.child(photoFile.name).putFile(myFile)
-
-//                    storageReference.child(photoFile.name).putFile(myFile).addOnSuccessListener(object : ValueEventListener,
-//                        OnSuccessListener<UploadTask.TaskSnapshot> {
-//                        override fun onDataChange(snapshot: DataSnapshot) {
-//                            TODO("Not yet implemented")
-//                        }
-//
-//                        override fun onCancelled(error: DatabaseError) {
-//                            TODO("Not yet implemented")
-//                        }
-//
-//                        override fun onSuccess(p0: UploadTask.TaskSnapshot?) {
-//                            Log.i("TAG", "##### onSuccess P $p0")
-//                            val x = p0?.storage?.downloadUrl.toString()
-//                            Log.i("TAG", "##### onSuccess X $x")
-//                            val y = p0?.storage?.downloadUrl?.result
-//                            Log.i("TAG", "##### onSuccess Y $y")
-//                            val z = p0?.storage?.downloadUrl?.result.toString()
-//                            Log.i("TAG", "##### onSuccess Z $z")
-//                        }
-//                    })
-
-
+                    storageReference.child(nameFile).putFile(uriFile).addOnSuccessListener(
+                        object : ValueEventListener,
+                            OnSuccessListener<UploadTask.TaskSnapshot>
+                    {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            TODO("Not yet implemented")
+                        }
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                        override fun onSuccess(p0: UploadTask.TaskSnapshot?) {
+                            saveData(nameFile)
+//                            storageReference.child(nameFile).putFile(uriFile)
+//                            Log.i("TAG", "##### isSuccessful ${p0?.storage?.downloadUrl?.isSuccessful}")
+//                            Log.i("TAG", "##### isComplete ${p0?.storage?.downloadUrl?.isComplete}")
+//                            Log.i("TAG", "##### isCanceled ${p0?.storage?.downloadUrl?.isCanceled}")
+//                            Log.i("TAG", "##### exception ${p0?.storage?.downloadUrl?.exception}")
+                        }
+                    })
 
 //                    Log.i("TAG", "##### onSuccess ${storageReference.downloadUrl}")
-
+//
 //                    val intent = Intent()
 //                    intent.putExtra("picture", photoFile)
 //                    intent.putExtra(
@@ -114,11 +106,29 @@ class CameraActivity : AppCompatActivity() {
 //                        cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
 //                    )
 //                    setResult(MainActivity.CAMERA_X_RESULT, intent)
-
-                    finish()
+//
+//                    finish()
                 }
             }
         )
+    }
+
+    private fun saveData(key: String) {
+        Log.i("TAG", "##### saveData $key")
+        database = Firebase.database.reference.child("data")
+
+        val date = timeStamp2
+        val position = "000"
+        val isImage = true
+        val isAudio = false
+        val isVideo = false
+
+        val data = Perlindungan( key, date, position, isImage, isAudio, isVideo )
+
+        database.child(key).setValue(data)
+        Log.i("TAG", "##### data $data")
+
+        finish()
     }
 
     private fun startCamera() {

@@ -9,10 +9,17 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val FILENAME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+//private const val FILENAME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+private const val FILENAME_FORMAT = "yyMMddHHmmss"
+private const val FILENAME_FORMAT2 = "dd-MMM-yyyy"
 
 val timeStamp: String = SimpleDateFormat(
     FILENAME_FORMAT,
+    Locale.US
+).format(System.currentTimeMillis())
+
+val timeStamp2: String = SimpleDateFormat(
+    FILENAME_FORMAT2,
     Locale.US
 ).format(System.currentTimeMillis())
 
@@ -30,7 +37,7 @@ fun createFile(application: Application): File {
         mediaDir != null && mediaDir.exists()
     ) mediaDir else application.filesDir
 
-    return File(outputDirectory, "$timeStamp.jpg")
+    return File(outputDirectory, "$timeStamp")
 }
 
 fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
