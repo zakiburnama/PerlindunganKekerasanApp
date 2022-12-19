@@ -1,17 +1,16 @@
 package com.example.perlindunganpelecehanapp.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.perlindunganpelecehanapp.Kekerasan
+import com.example.perlindunganpelecehanapp.MapsActivity
 import com.example.perlindunganpelecehanapp.PerlindunganAdapter
 import com.example.perlindunganpelecehanapp.databinding.FragmentDashboardBinding
 import com.google.firebase.storage.FirebaseStorage
@@ -67,6 +66,18 @@ private var _binding: FragmentDashboardBinding? = null
                     adapter = adapterPerlindungan
                     layoutManager = LinearLayoutManager(context)
                 }
+
+                adapterPerlindungan.setOnItemClickCallback(object : PerlindunganAdapter.OnItemClickCallback {
+                    override fun onItemClicked(data: Kekerasan) {
+                        Log.i("TAG", "##### KEYYY ${data.key}")
+                        Log.i("TAG", "##### URLLL ${data.url}")
+                        val intent = Intent(activity, MapsActivity::class.java)
+                            .putExtra(MapsActivity.EXTRA_KEY, data.key)
+                            .putExtra(MapsActivity.EXTRA_URL, data.url)
+                        startActivity(intent)
+                    }
+                })
+
 //                val animalAdapter = AnimalAdapter(imageUrls)
 //                if (animalAdapter.itemCount == 0) {
 //                    binding.textViewNoData.visibility = View.VISIBLE
@@ -76,6 +87,7 @@ private var _binding: FragmentDashboardBinding? = null
 //                    adapter = animalAdapter
 //                    layoutManager = LinearLayoutManager(this@ShowListPhotoActivity)
 //                }
+
             }
         } catch(e: Exception) {
             withContext(Dispatchers.Main) {

@@ -11,4 +11,6 @@ data class Perlindungan(
     var isImage: Boolean? = false,
     var isAudio: Boolean? = false,
     var isVideo: Boolean? = false,
+    var lat: Double? = 0.0,
+    var lang: Double? = 0.0,
 ) : Parcelable

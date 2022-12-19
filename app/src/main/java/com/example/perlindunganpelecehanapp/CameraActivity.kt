@@ -1,5 +1,8 @@
 package com.example.perlindunganpelecehanapp
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Build
@@ -8,6 +11,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.perlindunganpelecehanapp.databinding.ActivityCameraBinding
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -15,6 +19,12 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -27,17 +37,28 @@ import com.google.firebase.storage.UploadTask
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
+
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private var imageCapture: ImageCapture? = null
 
     private val storageReference = FirebaseStorage.getInstance().getReference("uploads")
     private lateinit var database : DatabaseReference
 
+//    private lateinit var mMap: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private var lat : Double = 0.0
+    private var lang : Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        getMyLastLocation()
 
         binding.captureImage.setOnClickListener { takePhoto() }
         binding.switchCamera.setOnClickListener {
@@ -52,6 +73,68 @@ class CameraActivity : AppCompatActivity() {
         hideSystemUI()
         startCamera()
     }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    // Precise location access granted.
+                    getMyLastLocation()
+                }
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    // Only approximate location access granted.
+                    getMyLastLocation()
+                }
+                else -> {
+                    // No location access granted.
+                }
+            }
+        }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun getMyLastLocation() {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    lat = location.latitude
+                    lang = location.longitude
+//                    showStartMarker(location)
+                } else {
+                    Toast.makeText(
+                        this@CameraActivity,
+                        "Location is not found. Try Again",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
+//    private fun showStartMarker(location: Location) {
+//        val startLocation = LatLng(location.latitude, location.longitude)
+////        mMap.addMarker(
+////            MarkerOptions()
+////                .position(startLocation)
+////        )
+////        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 17f))
+//    }
 
     private fun takePhoto() {
         // takePhoto
@@ -89,32 +172,14 @@ class CameraActivity : AppCompatActivity() {
                         }
                         override fun onSuccess(p0: UploadTask.TaskSnapshot?) {
                             saveData(nameFile)
-//                            storageReference.child(nameFile).putFile(uriFile)
-//                            Log.i("TAG", "##### isSuccessful ${p0?.storage?.downloadUrl?.isSuccessful}")
-//                            Log.i("TAG", "##### isComplete ${p0?.storage?.downloadUrl?.isComplete}")
-//                            Log.i("TAG", "##### isCanceled ${p0?.storage?.downloadUrl?.isCanceled}")
-//                            Log.i("TAG", "##### exception ${p0?.storage?.downloadUrl?.exception}")
                         }
                     })
-
-//                    Log.i("TAG", "##### onSuccess ${storageReference.downloadUrl}")
-//
-//                    val intent = Intent()
-//                    intent.putExtra("picture", photoFile)
-//                    intent.putExtra(
-//                        "isBackCamera",
-//                        cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
-//                    )
-//                    setResult(MainActivity.CAMERA_X_RESULT, intent)
-//
-//                    finish()
                 }
             }
         )
     }
 
     private fun saveData(key: String) {
-        Log.i("TAG", "##### saveData $key")
         database = Firebase.database.reference.child("data")
 
         val date = timeStamp2
@@ -122,11 +187,12 @@ class CameraActivity : AppCompatActivity() {
         val isImage = true
         val isAudio = false
         val isVideo = false
+        val lat = lat
+        val lang = lang
 
-        val data = Perlindungan( key, date, position, isImage, isAudio, isVideo )
+        val data = Perlindungan( key, date, position, isImage, isAudio, isVideo, lat, lang )
 
         database.child(key).setValue(data)
-        Log.i("TAG", "##### data $data")
 
         finish()
     }

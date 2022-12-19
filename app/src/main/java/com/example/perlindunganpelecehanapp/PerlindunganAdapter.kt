@@ -11,6 +11,12 @@ import com.squareup.picasso.Picasso
 class PerlindunganAdapter(private val listPerlindungan: ArrayList<Kekerasan>) :
     RecyclerView.Adapter<PerlindunganAdapter.ViewHolder>() {
 
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvItemName: TextView = view.findViewById(R.id.tv_item_title)
         val ivItem: ImageView = view.findViewById(R.id.iv_item_image)
@@ -28,9 +34,17 @@ class PerlindunganAdapter(private val listPerlindungan: ArrayList<Kekerasan>) :
         val img = listPerlindungan[position].url
 
         Picasso.get().load(img).into(holder.ivItem)
+
+        holder.itemView.setOnClickListener{
+            onItemClickCallback.onItemClicked(listPerlindungan[holder.adapterPosition])
+        }
     }
 
     override fun getItemCount(): Int {
         return listPerlindungan.size
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: Kekerasan)
     }
 }
