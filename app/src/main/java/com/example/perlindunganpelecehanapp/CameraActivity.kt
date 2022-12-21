@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Build
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.perlindunganpelecehanapp.databinding.ActivityCameraBinding
@@ -60,9 +61,12 @@ class CameraActivity : AppCompatActivity() {
 
         getMyLastLocation()
 
-        binding.captureImage.setOnClickListener { takePhoto() }
+        binding.captureImage.setOnClickListener {
+            binding.progressBar2.visibility = View.VISIBLE
+            takePhoto()
+        }
         binding.switchCamera.setOnClickListener {
-            cameraSelector = if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) CameraSelector.DEFAULT_FRONT_CAMERA
+            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
             else CameraSelector.DEFAULT_BACK_CAMERA
             startCamera()
         }
@@ -108,7 +112,6 @@ class CameraActivity : AppCompatActivity() {
                 if (location != null) {
                     lat = location.latitude
                     lang = location.longitude
-//                    showStartMarker(location)
                 } else {
                     Toast.makeText(
                         this@CameraActivity,
@@ -126,15 +129,6 @@ class CameraActivity : AppCompatActivity() {
             )
         }
     }
-
-//    private fun showStartMarker(location: Location) {
-//        val startLocation = LatLng(location.latitude, location.longitude)
-////        mMap.addMarker(
-////            MarkerOptions()
-////                .position(startLocation)
-////        )
-////        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 17f))
-//    }
 
     private fun takePhoto() {
         // takePhoto
@@ -194,6 +188,7 @@ class CameraActivity : AppCompatActivity() {
 
         database.child(key).setValue(data)
 
+        binding.progressBar2.visibility = View.GONE
         finish()
     }
 

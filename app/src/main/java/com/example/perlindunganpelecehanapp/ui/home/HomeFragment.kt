@@ -1,6 +1,7 @@
 package com.example.perlindunganpelecehanapp.ui.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -53,14 +54,19 @@ private var _binding: FragmentHomeBinding? = null
             val intent = Intent(activity, CameraActivity::class.java)
             startActivity(intent)
         }
-
         binding.button2.setOnClickListener {
-        }
-
-        binding.button3.setOnClickListener {
-            val intent = Intent(activity, MapsActivity::class.java)
+            val intent = Intent(activity, CameraActivity::class.java)
             startActivity(intent)
         }
+        binding.button3.setOnClickListener {
+            Toast.makeText(context, "Not Avaiable Yet", Toast.LENGTH_SHORT).show()
+        }
+        binding.button4.setOnClickListener {
+            val phoneNumber = "081234567890"
+            val dialPhoneIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+            startActivity(dialPhoneIntent)
+        }
+
     }
 
     override fun onDestroyView() {

@@ -45,6 +45,8 @@ private var _binding: FragmentDashboardBinding? = null
 //          textView.text = it
 //        }
 
+        binding.progressBar.visibility = View.VISIBLE
+
         return root
     }
 
@@ -60,6 +62,8 @@ private var _binding: FragmentDashboardBinding? = null
             }
 
             withContext(Dispatchers.Main) {
+                binding.progressBar.visibility = View.GONE
+
                 val adapterPerlindungan = PerlindunganAdapter(listPerlindungan)
                 binding.rvPerlindungan.adapter = adapterPerlindungan
                 binding.rvPerlindungan.apply {
@@ -78,20 +82,10 @@ private var _binding: FragmentDashboardBinding? = null
                     }
                 })
 
-//                val animalAdapter = AnimalAdapter(imageUrls)
-//                if (animalAdapter.itemCount == 0) {
-//                    binding.textViewNoData.visibility = View.VISIBLE
-//                }
-//                binding.progressLoadList.visibility = View.GONE
-//                binding.recyclerViewImage.apply {
-//                    adapter = animalAdapter
-//                    layoutManager = LinearLayoutManager(this@ShowListPhotoActivity)
-//                }
-
             }
         } catch(e: Exception) {
             withContext(Dispatchers.Main) {
-//                binding.progressLoadList.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             }
         }

@@ -43,9 +43,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val url = intent.getStringExtra(EXTRA_URL)
         val key = intent.getStringExtra(EXTRA_KEY)
 
-        Log.i("TAG", "##### URL $url")
-        Log.i("TAG", "##### KEY $key")
-
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = key.toString()
 
@@ -59,8 +56,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val data = it.getValue(Perlindungan::class.java)
             val lat = data?.lat
             val lang = data?.lang
+            val date = data?.date.toString()
             if (lang != null && lat != null) {
-                showStartMarker2(lat, lang)
+                showStartMarker2(lat, lang, date)
             }
         }.addOnFailureListener {
 
@@ -84,8 +82,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
-//        getMyLastLocation()
     }
 
     private val requestPermissionLauncher =
@@ -148,11 +144,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 17f))
     }
 
-    private fun showStartMarker2(Lat: Double, Lang: Double) {
+    private fun showStartMarker2(Lat: Double, Lang: Double, date: String) {
         val startLocation = LatLng(Lat, Lang)
         mMap.addMarker(
             MarkerOptions()
                 .position(startLocation)
+                .title(date)
         )
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 17f))
     }
@@ -160,8 +157,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     companion object {
         const val EXTRA_URL = "extra_utl"
         const val EXTRA_KEY = "extra_key"
-        const val EXTRA_LAT = "extra_lat"
-        const val EXTRA_LANG = "extra_lang"
     }
 
 }
