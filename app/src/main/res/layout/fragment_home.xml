@@ -18,21 +18,26 @@
 
         <Button
             android:id="@+id/button"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="FOTO"
+            android:layout_weight="1"
             android:paddingTop="18dp"
             app:icon="@drawable/ic_baseline_camera_alt_24"
             app:iconGravity="top"
             app:iconSize="100dp" />
 
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"/>
+
         <Button
             android:id="@+id/button2"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:paddingTop="18dp"
             android:text="VIDEO"
+            android:layout_weight="1"
+            android:paddingTop="18dp"
             app:icon="@drawable/ic_baseline_videocam_24"
             app:iconGravity="top"
             app:iconSize="100dp" />
@@ -50,19 +55,24 @@
             android:id="@+id/button3"
             android:layout_width="180dp"
             android:layout_height="match_parent"
-            android:paddingTop="18dp"
             android:text="AUDIO"
+            android:layout_weight="1"
+            android:paddingTop="18dp"
             app:icon="@drawable/ic_baseline_mic_24"
             app:iconGravity="top"
             app:iconSize="100dp" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/button4"
             android:layout_width="180dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:paddingTop="18dp"
             android:text="SOS"
+            android:layout_weight="1"
+            android:paddingTop="18dp"
             app:icon="@drawable/ic_baseline_headset_mic_24"
             app:iconGravity="top"
             app:iconSize="100dp" />

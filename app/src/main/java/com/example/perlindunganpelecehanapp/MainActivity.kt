@@ -12,6 +12,9 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -83,7 +86,26 @@ private lateinit var binding: ActivityMainBinding
             val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_menu, menu)
+        return true
+    }
 
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.navigation_profile -> {
+                Log.i("TAG", "###### KLIKL")
+                Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.navigation_setting -> {
+                Log.i("TAG", "###### KLIKL")
+                Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> true
+        }
     }
 }
