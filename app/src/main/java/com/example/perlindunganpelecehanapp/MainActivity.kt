@@ -58,6 +58,9 @@ private lateinit var binding: ActivityMainBinding
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.navView.background = null
+        binding.navView.menu.getItem(1).isEnabled = false
+
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
