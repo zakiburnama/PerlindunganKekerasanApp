@@ -52,6 +52,17 @@ class TampilanHelper(context: Context) {
             null, null, null, null)
     }
 
+    fun queryById2(): Cursor {
+        return database.query(
+            DATABASE_TABLE,
+            null,
+            "$_ID > 4",
+            null,
+            null,
+            null,
+            null)
+    }
+
     fun insert(values: ContentValues?): Long {
         return database.insert(DATABASE_TABLE, null, values)
     }

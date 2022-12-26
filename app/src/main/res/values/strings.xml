@@ -8,6 +8,7 @@
     <string name="gambar">Gambar</string>
     <string name="profile">Profile</string>
     <string name="settings">Settings</string>
+    <string name="tambah">Tambah</string>
 
     <string-array name="title">
         <item>Photo</item>

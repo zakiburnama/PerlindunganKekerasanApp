@@ -95,8 +95,7 @@ private lateinit var binding: ActivityMainBinding
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_profile -> {
-                Log.i("TAG", "###### KLIKL")
+            R.id.menu_tambah -> {
                 Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show()
                 true
             }

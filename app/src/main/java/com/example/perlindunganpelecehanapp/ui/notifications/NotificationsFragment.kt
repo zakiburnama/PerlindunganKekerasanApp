@@ -1,6 +1,7 @@
 package com.example.perlindunganpelecehanapp.ui.notifications
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,7 +25,6 @@ class NotificationsFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val list = ArrayList<Tampilan>()
     private lateinit var adapter: HomeAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -44,21 +44,42 @@ class NotificationsFragment : Fragment() {
 
         adapter = HomeAdapter(object : HomeAdapter.OnItemClickCallback {
             override fun onItemClicked(selectedHomework: Home?, position: Int?) {
-//                val intent =
-//                    Intent(this@MainActivity, AddHomeworkActivity::class.java)
-//                intent.putExtra(AddHomeworkActivity.EXTRA_HOMEWORK, selectedHomework)
-//                intent.putExtra(AddHomeworkActivity.EXTRA_POSITION, position)
-//                resultLauncher.launch(intent)
-                Toast.makeText(context, "KLIK", Toast.LENGTH_SHORT).show()
-                Log.i("TAG", "##### KLIK")
+                if (selectedHomework != null) {
+                    when (selectedHomework.id) {
+                        1 -> {
+                            val intent = Intent(context, CameraActivity::class.java)
+                            startActivity(intent)
+                        }
+                        2 -> {
+                            val intent = Intent(context, CameraActivity::class.java)
+                            startActivity(intent)
+                        }
+                        3 -> {
+                            val intent = Intent(context, CameraActivity::class.java)
+                            startActivity(intent)
+                        }
+                        4 -> {
+                            val intent = Intent(context, CameraActivity::class.java)
+                            startActivity(intent)
+                        }
+                        else -> {
+                            val number = selectedHomework.description
+                            val dialPhoneIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number"))
+                            startActivity(dialPhoneIntent)
+                        }
+                    }
+                }
             }
         })
         binding.rvPerlindungan.adapter = adapter
 
-
-//        list.addAll(listTampilan)
-//        showRecycler()
-        loadHomeworkAsync()
+        if (savedInstanceState == null) {
+            loadHomeworkAsync()
+        } else {
+            val list = savedInstanceState.getParcelableArrayList<Home>(EXTRA_STATE)
+            if (list != null)
+                adapter.listHome = list
+        }
 
         return root
     }
@@ -88,35 +109,17 @@ class NotificationsFragment : Fragment() {
         }
     }
 
-//    private val listTampilan: ArrayList<Tampilan>
-//    get() {
-//        val dataTitle = resources.getStringArray(R.array.title)
-//        val dataDesc = resources.getStringArray(R.array.description)
-//        val dataIcons = resources.obtainTypedArray(R.array.icons)
-//        val dataIsSwitch = resources.getIntArray(R.array.isSwitch)
-//
-//        val listTampilanku = ArrayList<Tampilan>()
-//        for (i in dataTitle.indices) {
-//            val data = Tampilan(dataTitle[i], dataDesc[i], dataIcons.getResourceId(i, -1), dataIsSwitch[i])
-//            listTampilanku.add(data)
-//        }
-//
-//        return listTampilanku
-//    }
-//
-//    private fun showRecycler() {
-//        val adapter = TampilanAdapter(list)
-//        binding.rvPerlindungan.adapter = adapter
-//        adapter.setOnItemClickCallback(object : TampilanAdapter.OnItemClickCallback {
-//            override fun onItemClicked(data: Tampilan) {
-//                Toast.makeText(context, "Kamu memilih " + data.title, Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(EXTRA_STATE, adapter.listHome)
+    }
+
+    companion object {
+        private const val EXTRA_STATE = "EXTRA_STATE"
     }
 }
