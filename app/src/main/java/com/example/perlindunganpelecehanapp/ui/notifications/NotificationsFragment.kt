@@ -23,10 +23,6 @@ class NotificationsFragment : Fragment() {
 
     private val list = ArrayList<Tampilan>()
 
-//    init {
-//        list.addAll(listTampilan)
-//    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         //    val notificationsViewModel =
         //            ViewModelProvider(this).get(NotificationsViewModel::class.java)
