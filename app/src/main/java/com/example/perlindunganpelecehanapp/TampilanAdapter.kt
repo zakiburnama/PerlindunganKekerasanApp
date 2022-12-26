@@ -1,5 +1,6 @@
 package com.example.perlindunganpelecehanapp
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,10 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
-
-//class TampilanAdapter {
-//}
-
 
 class TampilanAdapter(private val listTampilan: ArrayList<Tampilan>) : RecyclerView.Adapter<TampilanAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback

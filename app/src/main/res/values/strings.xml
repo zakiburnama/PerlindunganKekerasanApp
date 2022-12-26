@@ -27,7 +27,7 @@
 
     <integer-array name="icons">
         <item>@drawable/ic_baseline_camera_alt_24</item>
-        <item>@drawable/ic_baseline_camera_alt_24</item>
+        <item>@drawable/ic_baseline_bubble_chart_24</item>
         <item>@drawable/ic_baseline_videocam_24</item>
         <item>@drawable/ic_baseline_mic_24</item>
         <item>@drawable/ic_baseline_headset_mic_24</item>
