@@ -101,8 +101,8 @@ private lateinit var binding: ActivityMainBinding
                 true
             }
             R.id.menu_settings -> {
-                Log.i("TAG", "###### KLIKL")
-                Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> true

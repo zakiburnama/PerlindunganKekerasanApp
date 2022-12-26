@@ -8,18 +8,18 @@ import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns._ID
 import com.example.perlindunganpelecehanapp.db.DatabaseContract.HomeworkColumns.Companion.TABLE_NAME
 
-class HomeworkHelper(context: Context) {
+class TampilanHelper(context: Context) {
 
     private var dataBaseHelper: DatabaseHelper = DatabaseHelper(context)
     private lateinit var database: SQLiteDatabase
 
     companion object {
         private const val DATABASE_TABLE = TABLE_NAME
-        private var INSTANCE: HomeworkHelper? = null
+        private var INSTANCE: TampilanHelper? = null
 
-        fun getInstance(context: Context): HomeworkHelper =
+        fun getInstance(context: Context): TampilanHelper =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: HomeworkHelper(context)
+                INSTANCE ?: TampilanHelper(context)
             }
     }
 
