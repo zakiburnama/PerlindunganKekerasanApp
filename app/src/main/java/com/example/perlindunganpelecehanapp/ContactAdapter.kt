@@ -18,17 +18,17 @@ class ContactAdapter(private val onItemClickCallback: OnItemClickCallback) :
         }
 
     interface OnItemClickCallback {
-        fun onItemClicked(selectedHomework: Home?, position: Int?)
+        fun onItemClicked(selectedHome: Home?, position: Int?)
     }
 
-    fun addItem(homework: Home) {
-        this.listContact.add(homework)
+    fun addItem(home: Home) {
+        this.listContact.add(home)
         notifyItemInserted(this.listContact.size - 1)
     }
 
-    fun updateItem(position: Int, homework: Home) {
-        this.listContact[position] = homework
-        notifyItemChanged(position, homework)
+    fun updateItem(position: Int, home: Home) {
+        this.listContact[position] = home
+        notifyItemChanged(position, home)
     }
 
     fun removeItem(position: Int) {
@@ -51,7 +51,6 @@ class ContactAdapter(private val onItemClickCallback: OnItemClickCallback) :
     inner class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemContactBinding.bind(itemView)
         fun bind(home: Home) {
-            Log.i("TAG", "##### ADAPTER BIND")
             binding.tvContact.text = home.title
             binding.tvNumber.text = home.description
             binding.cvContact.setOnClickListener {

@@ -16,17 +16,17 @@ class HomeAdapter(private val onItemClickCallback: OnItemClickCallback) :
             this.listHome.addAll(listHome)
         }
     interface OnItemClickCallback {
-        fun onItemClicked(selectedHomework: Home?, position: Int?)
+        fun onItemClicked(selectedHome: Home?, position: Int?)
     }
 
-    fun addItem(homework: Home) {
-        this.listHome.add(homework)
+    fun addItem(home: Home) {
+        this.listHome.add(home)
         notifyItemInserted(this.listHome.size - 1)
     }
 
-    fun updateItem(position: Int, homework: Home) {
-        this.listHome[position] = homework
-        notifyItemChanged(position, homework)
+    fun updateItem(position: Int, home: Home) {
+        this.listHome[position] = home
+        notifyItemChanged(position, home)
     }
 
     fun removeItem(position: Int) {

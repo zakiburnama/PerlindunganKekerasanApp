@@ -43,9 +43,9 @@ class NotificationsFragment : Fragment() {
 //        binding.rvPerlindungan.setHasFixedSize(true)
 
         adapter = HomeAdapter(object : HomeAdapter.OnItemClickCallback {
-            override fun onItemClicked(selectedHomework: Home?, position: Int?) {
-                if (selectedHomework != null) {
-                    when (selectedHomework.id) {
+            override fun onItemClicked(selectedHome: Home?, position: Int?) {
+                if (selectedHome != null) {
+                    when (selectedHome.id) {
                         1 -> {
                             val intent = Intent(context, CameraActivity::class.java)
                             startActivity(intent)
@@ -63,7 +63,7 @@ class NotificationsFragment : Fragment() {
                             startActivity(intent)
                         }
                         else -> {
-                            val number = selectedHomework.description
+                            val number = selectedHome.description
                             val dialPhoneIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number"))
                             startActivity(dialPhoneIntent)
                         }
@@ -83,8 +83,27 @@ class NotificationsFragment : Fragment() {
                 adapter.listHome = list
         }
 
+//        Log.i("TAG", "#### $listTampilan")
+
         return root
     }
+
+//    private val listTampilan: ArrayList<Tampilan>
+//        get() {
+//            val dataTitle = resources.getStringArray(R.array.title)
+//            val dataDesc = resources.getStringArray(R.array.description)
+//            val dataIcons = resources.obtainTypedArray(R.array.icons)
+//            val dataIsSwitch = resources.getIntArray(R.array.isSwitch)
+//
+//            val listTampilanku = ArrayList<Tampilan>()
+//            for (i in dataTitle.indices) {
+//                val data = Tampilan(dataTitle[i], dataDesc[i], dataIcons.getResourceId(i, -1), dataIsSwitch[i])
+//                listTampilanku.add(data)
+//                Log.i("TAG", "#### IMG ${data.img}")
+//            }
+//
+//            return listTampilanku
+//        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
