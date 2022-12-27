@@ -11,15 +11,11 @@ import com.example.perlindunganpelecehanapp.databinding.ActivityMainBinding
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import java.io.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -96,7 +92,8 @@ private lateinit var binding: ActivityMainBinding
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_tambah -> {
-                Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, AddNewContactActivity::class.java)
+                startActivity(intent)
                 true
             }
             R.id.menu_settings -> {

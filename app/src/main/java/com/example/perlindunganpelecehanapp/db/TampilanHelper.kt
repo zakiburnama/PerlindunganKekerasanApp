@@ -60,6 +60,7 @@ class TampilanHelper(context: Context) {
             null,
             null,
             null,
+            "$_ID ASC",
             null)
     }
 

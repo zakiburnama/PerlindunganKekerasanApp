@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.perlindunganpelecehanapp.databinding.ItemBinding
 
 class HomeAdapter(private val onItemClickCallback: OnItemClickCallback) :
-    RecyclerView.Adapter<HomeAdapter.HomeworkViewHolder>() {
+    RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
     var listHome = ArrayList<Home>()
         set(listHome) {
             if (listHome.size > 0) {
@@ -35,18 +35,18 @@ class HomeAdapter(private val onItemClickCallback: OnItemClickCallback) :
         notifyItemRangeChanged(position, this.listHome.size)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeworkViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-        return HomeworkViewHolder(view)
+        return HomeViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HomeworkViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         holder.bind(listHome[position])
     }
 
     override fun getItemCount(): Int = this.listHome.size
 
-    inner class HomeworkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemBinding.bind(itemView)
         fun bind(home: Home) {
             if (home.isSwitch == 1)

@@ -74,8 +74,10 @@ class NotificationsFragment : Fragment() {
         binding.rvPerlindungan.adapter = adapter
 
         if (savedInstanceState == null) {
+            Log.i("TAG", "##### savedInstanceState NULL NOTIF")
             loadHomeworkAsync()
         } else {
+            Log.i("TAG", "##### savedInstanceState ELSE NOTIF")
             val list = savedInstanceState.getParcelableArrayList<Home>(EXTRA_STATE)
             if (list != null)
                 adapter.listHome = list
